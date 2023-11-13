@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "LaTeXSwiftUI",
+  name: "MarkdownLaTeX",
   platforms: [
     .iOS(.v16),
     .macOS(.v13)
@@ -17,7 +17,8 @@ let package = Package(
   dependencies: [
      .package(url: "https://github.com/colinc86/MathJaxSwift", from: "3.4.0"),
      .package(url: "https://github.com/exyte/SVGView", from: "1.0.4"),
-     .package(url: "https://github.com/Kitura/swift-html-entities", from: "4.0.1")
+     .package(url: "https://github.com/Kitura/swift-html-entities", from: "4.0.1"),
+     .package(url: "https://github.com/gonzalezreal/swift-markdown-ui", from: "2.0.2")
   ],
   targets: [
     .target(
@@ -25,7 +26,8 @@ let package = Package(
       dependencies: [
         "MathJaxSwift",
         "SVGView",
-        .product(name: "HTMLEntities", package: "swift-html-entities")
+        .product(name: "HTMLEntities", package: "swift-html-entities"),
+        .product(name: "MarkdownUI", package: "swift-markdown-ui")
       ]),
     .testTarget(
       name: "LaTeXSwiftUITests",
