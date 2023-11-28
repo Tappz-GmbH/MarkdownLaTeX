@@ -9,27 +9,13 @@ import SwiftUI
 import MarkdownUI
 
 public struct MarkdownLaTeX: View {
-    struct Block: Hashable {
-        enum Style {
-        case markdown
-        case latex
-        }
-        
-        let text: String
-        let type: Style
-    }
-    private let components: [Block]
+    private let components: [TappzParser.Block]
     private let fontSize: CGFloat
     
+    @State var label: String = ""
+    
     public init(_ text: String, fontSize: CGFloat = 15) {
-        self.components = text.split(separator: "\n\n")
-            .map { String($0) }
-            .map {
-                Parser.parse($0)
-                    .first(where: { $0.type.isEquation }) != nil
-                ? Block(text: $0, type: .latex)
-                : Block(text: $0, type: .markdown)
-            }
+        self.components = TappzParser.parse(text)
         self.fontSize = fontSize
     }
     
@@ -54,8 +40,16 @@ public struct MarkdownLaTeX: View {
 
 #Preview {
     ScrollView {
-//        MarkdownLaTeX("To solve the system of equations:\n\n\\[\n\\begin{align*}\nx + 2y + z &= 8 \\quad \\text{(Equation 1)} \\\\\n2x + y + 2z &= 10 \\quad \\text{(Equation 2)} \\\\\n3x + 3y + z &= 12 \\quad \\text{(Equation 3)}\n\\end{align*}\n\\]\n\nWe can solve this system using the method of elimination or substitution. Let\'s use the method of elimination.\n\nFirst, let\'s eliminate the variable $x$. Multiply Equation 1 by $2$ and subtract Equation 2 multiplied by $1$:\n\n\\[\n\\begin{align*}\n2(x + 2y + z) - (2x + y + 2z) &= 2(8) - 10 \\\\\n2x + 4y + 2z - 2x - y - 2z &= 16 - 10 \\\\\n3y &= 6 \\\\\ny &= 2\n\\end{align*}\n\\]\n\nNow that we have the value of $y$, we can substitute it back into Equation 1:\n\n\\[\n\\begin{align*}\nx + 2(2) + z &= 8 \\\\\nx + 4 + z &= 8 \\\\\nx + z &= 4 \\quad \\text{(Equation 4)}\n\\end{align*}\n\\]\n\nNext, substitute the value of $y$ into Equation 3:\n\n\\[\n\\begin{align*}\n3x + 3(2) + z &= 12 \\\\\n3x + 6 + z &= 12 \\\\\n3x + z &= 6 \\quad \\text{(Equation 5)}\n\\end{align*}\n\\]\n\nNow, we have two equations left:\n\n\\[\n\\begin{align*}\nx + z &= 4 \\quad \\text{(Equation 4)} \\\\\n3x + z &= 6 \\quad \\text{(Equation 5)}\n\\end{align*}\n\\]\n\nTo eliminate the variable $z$, multiply Equation 4 by $-1$ and add it to Equation 5:\n\n\\[\n\\begin{align*}\n-(x + z) + (3x + z) &= -4 + 6 \\\\\n2x &= 2 \\\\\nx &= 1\n\\end{align*}\n\\]\n\nSubstitute the value of $x$ back into Equation 4:\n\n\\[\n\\begin{align*}\n1 + z &= 4 \\\\\nz &= 3\n\\end{align*}\n\\]\n\nSo the solution to the system of equations is $x = 1$, $y = 2$, and $z = 3$.")
+        MarkdownLaTeX("To solve the system of equations:\n\n\\[\n\\begin{align*}\nx + 2y + z &= 8 \\quad \\text{(Equation 1)} \\\\\n2x + y + 2z &= 10 \\quad \\text{(Equation 2)} \\\\\n3x + 3y + z &= 12 \\quad \\text{(Equation 3)}\n\\end{align*}\n\\]\n\nWe can solve this system using the method of elimination or substitution. Let\'s use the method of elimination.\n\nFirst, let\'s eliminate the variable $x$. Multiply Equation 1 by $2$ and subtract Equation 2 multiplied by $1$:\n\n\\[\n\\begin{align*}\n2(x + 2y + z) - (2x + y + 2z) &= 2(8) - 10 \\\\\n2x + 4y + 2z - 2x - y - 2z &= 16 - 10 \\\\\n3y &= 6 \\\\\ny &= 2\n\\end{align*}\n\\]\n\nNow that we have the value of $y$, we can substitute it back into Equation 1:\n\n\\[\n\\begin{align*}\nx + 2(2) + z &= 8 \\\\\nx + 4 + z &= 8 \\\\\nx + z &= 4 \\quad \\text{(Equation 4)}\n\\end{align*}\n\\]\n\nNext, substitute the value of $y$ into Equation 3:\n\n\\[\n\\begin{align*}\n3x + 3(2) + z &= 12 \\\\\n3x + 6 + z &= 12 \\\\\n3x + z &= 6 \\quad \\text{(Equation 5)}\n\\end{align*}\n\\]\n\nNow, we have two equations left:\n\n\\[\n\\begin{align*}\nx + z &= 4 \\quad \\text{(Equation 4)} \\\\\n3x + z &= 6 \\quad \\text{(Equation 5)}\n\\end{align*}\n\\]\n\nTo eliminate the variable $z$, multiply Equation 4 by $-1$ and add it to Equation 5:\n\n\\[\n\\begin{align*}\n-(x + z) + (3x + z) &= -4 + 6 \\\\\n2x &= 2 \\\\\nx &= 1\n\\end{align*}\n\\]\n\nSubstitute the value of $x$ back into Equation 4:\n\n\\[\n\\begin{align*}\n1 + z &= 4 \\\\\nz &= 3\n\\end{align*}\n\\]\n\nSo the solution to the system of equations is $x = 1$, $y = 2$, and $z = 3$.")
         MarkdownLaTeX("""
+            Hello world
+            $$
+            \\begin{cases}
+            3x - y = 2 \\
+            x^2 - 4x + 8 = y
+            \\end{cases}
+            $$
+            
             | abc | defghi |
             :-: | -----------:
             bar | baz
